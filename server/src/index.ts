@@ -9,7 +9,7 @@ app.use(express.json());
 dotenv.config()
 
 
-app.get('/search-related', async (req: any, res: any) => {
+app.get('/stats', async (req: any, res: any) => {
   try {
     const videoUrl = req.query.videoUrl as string;
     if (!videoUrl) {
@@ -23,13 +23,14 @@ app.get('/search-related', async (req: any, res: any) => {
       return res.status(400).json({ error: 'Invalid YouTube URL' });
     }
 
+    console.log({RAPIDAPI_HOST:process.env.RAPIDAPI_HOST,
+      RAPIDAPI_KEY:process.env.RAPIDAPI_KEY,})
 
-    const response = await axios.get(`${process.env.RAPIDAPI_HOST}/search`, {
+
+    const response = await axios.get(`https://youtube-v31.p.rapidapi.com/videos`, {
       params: {
-        relatedToVideoId: videoId,
-        part: 'id,snippet',
-        type: 'video',
-        maxResults: 50,
+        id: videoId,
+        part: 'contentDetails,snippet,statistics',
       },
       headers: {
         'x-rapidapi-host': process.env.RAPIDAPI_HOST,
@@ -37,7 +38,26 @@ app.get('/search-related', async (req: any, res: any) => {
       },
     });
 
-    res.json(response.data);
+    console.log('data', response.data)
+    if(response.status === 200){
+
+      const data = response.data
+      const item = data.items[0]
+      
+      res.status(200).json({
+        videoId: item.id,
+        title: item.snippet.title,
+        description: item.snippet.description,
+        channelTitle: item.snippet.channelTitle,
+        channelId: item.snippet.channelId,
+        publishedAt: item.snippet.publishedAt,
+        thumbnails: item.snippet.thumbnails,
+        tags: item.snippet.tags || [],
+        duration: item.contentDetails.duration,
+        stats: item.statistics,
+
+      });
+    }
   } catch (error) {
     console.error('Error fetching related videos:', error);
     res.status(500).json({ error: 'Failed to fetch related videos' });
