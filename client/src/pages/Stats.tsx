@@ -14,7 +14,7 @@ const Stats = ({ videoData, onBack }) => {
   } = videoData;
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-8">
+    <div className="min-h-screen bg-gray-900 text-white p-8 font-lufga">
       <div className="max-w-6xl mx-auto">
         <button
           className="mb-8 text-cyan-400 hover:text-cyan-300 transition-colors cursor-pointer"

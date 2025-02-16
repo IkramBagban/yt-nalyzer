@@ -63,6 +63,8 @@ app.get("/stats", async (req: any, res: any) => {
         duration: item.contentDetails.duration,
         stats: item.statistics,
       });
+    }else {
+      throw Error("Invalid url")
     }
   } catch (error) {
     console.error("Error fetching related videos:", error);

@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+
+@font-face {
+  font-family: Lufga;
+  src: url("./assets/fonts/LufgaRegular.ttf");
+}
+
+@theme {
+  --font-lufga: Lufga, 'sans-serif'
+}
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -13,4 +23,5 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
 }
